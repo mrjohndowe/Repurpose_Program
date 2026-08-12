@@ -4,3 +4,4 @@ data/state.json
 storage/downloads/*
 !storage/downloads/.gitkeep
 npm-debug.log*
+package-lock.json
