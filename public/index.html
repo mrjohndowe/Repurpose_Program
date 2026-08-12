@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Repurpose</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div><strong>Repurpose</strong><span>Program</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="dashboard"><span>◫</span>Dashboard</button>
+        <button class="nav-item" data-view="workflows"><span>⌘</span>Workflows</button>
+        <button class="nav-item" data-view="content"><span>▣</span>Content</button>
+        <button class="nav-item" data-view="connections"><span>⛓</span>Connections</button>
+        <button class="nav-item" data-view="activity"><span>↻</span>Activity</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="automation-state"><span class="pulse"></span><div><strong>Automation engine</strong><small id="engineStatus">Ready</small></div></div>
+        <button id="scanActiveBtn" class="secondary wide">Scan active workflows</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">POST ONCE. REPURPOSE EVERYWHERE.</div>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="top-actions">
+          <span id="toast" class="toast"></span>
+          <button id="newWorkflowTop" class="primary">+ New workflow</button>
+        </div>
+      </header>
+
+      <section id="view-dashboard" class="view active">
+        <div class="hero-card">
+          <div>
+            <span class="kicker">AUTOMATED CONTENT DISTRIBUTION</span>
+            <h2>Choose a starting platform.<br>Build the route once.</h2>
+            <p>Repurpose detects new content, processes it through your workflow, and publishes it to every connected destination automatically.</p>
+            <div class="hero-actions"><button class="primary" data-go="workflows">Build a workflow</button><button class="secondary" data-go="connections">Connect accounts</button></div>
+          </div>
+          <div class="mini-flow" aria-hidden="true">
+            <div class="mini-node source"><b>TikTok</b><span>New video</span></div>
+            <div class="mini-line"></div>
+            <div class="mini-node process"><b>Process</b><span>Video + caption</span></div>
+            <div class="mini-split"><i></i><i></i></div>
+            <div class="mini-dests"><div class="mini-node youtube"><b>YouTube</b><span>Short</span></div><div class="mini-node facebook"><b>Facebook</b><span>Page Reel</span></div></div>
+          </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="two-col">
+          <section class="panel">
+            <div class="panel-head"><div><h3>Active workflows</h3><p>Automation routes currently watching for content.</p></div><button class="text-btn" data-go="workflows">View all</button></div>
+            <div id="dashboardWorkflows" class="stack"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><div><h3>Recent activity</h3><p>Latest workflow runs and destination results.</p></div><button class="text-btn" data-go="activity">View history</button></div>
+            <div id="dashboardActivity" class="stack"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-workflows" class="view">
+        <div class="workflow-layout">
+          <aside class="workflow-list-panel panel">
+            <div class="panel-head"><div><h3>Workflows</h3><p>Select one to edit.</p></div><button id="newWorkflowBtn" class="icon-btn">+</button></div>
+            <div id="workflowList" class="workflow-list"></div>
+          </aside>
+
+          <section class="builder-panel panel">
+            <div class="builder-head">
+              <div class="builder-title-wrap">
+                <input id="workflowName" class="workflow-name" value="" placeholder="Workflow name">
+                <input id="workflowDescription" class="workflow-description" value="" placeholder="What does this workflow do?">
+              </div>
+              <div class="builder-actions">
+                <label class="switch-label"><input id="workflowActive" type="checkbox"><span class="switch"></span><b>Active</b></label>
+                <button id="runWorkflowBtn" class="secondary">Run scan</button>
+                <button id="saveWorkflowBtn" class="primary">Save</button>
+                <button id="deleteWorkflowBtn" class="danger ghost">Delete</button>
+              </div>
+            </div>
+
+            <div class="builder-body">
+              <aside class="node-palette">
+                <div class="palette-section"><h4>TRIGGERS</h4><div id="paletteTriggers"></div></div>
+                <div class="palette-section"><h4>PROCESSING</h4><div id="paletteActions"></div></div>
+                <div class="palette-section"><h4>DESTINATIONS</h4><div id="paletteDestinations"></div></div>
+              </aside>
+              <div class="canvas-wrap">
+                <div class="canvas-toolbar"><span>Drag nodes to arrange your workflow.</span><button id="autoArrangeBtn" class="text-btn">Auto arrange</button></div>
+                <div id="workflowCanvas" class="workflow-canvas">
+                  <svg id="edgeLayer" class="edge-layer"></svg>
+                  <div id="nodeLayer"></div>
+                  <div id="emptyCanvas" class="empty-canvas"><b>Start with a trigger</b><span>Add nodes from the left to build your automation.</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-content" class="view">
+        <section class="panel">
+          <div class="panel-head"><div><h3>Content library</h3><p>Source posts Repurpose has seen or processed.</p></div><span class="muted" id="contentCount"></span></div>
+          <div id="contentGrid" class="content-grid"></div>
+        </section>
+      </section>
+
+      <section id="view-connections" class="view">
+        <section class="panel connection-intro"><h3>Connections</h3><p>Authorize the accounts Repurpose can use as workflow sources and destinations. Version 0.2 can start from TikTok, YouTube, or a selected Facebook Page. Destination support currently includes YouTube Shorts and Facebook Page Reels.</p></section>
+        <div id="connectionsGrid" class="connections-grid"></div>
+        <section class="panel settings-panel">
+          <div><h3>Automation schedule</h3><p>How often active source workflows check for new content.</p></div>
+          <label>Check every <select id="pollInterval"><option value="60000">1 minute</option><option value="300000">5 minutes</option><option value="600000">10 minutes</option><option value="900000">15 minutes</option><option value="1800000">30 minutes</option></select></label>
+          <button id="saveSettingsBtn" class="secondary">Save schedule</button>
+        </section>
+      </section>
+
+      <section id="view-activity" class="view">
+        <section class="panel">
+          <div class="panel-head"><div><h3>Workflow activity</h3><p>Every run records each node independently, so one destination can fail without erasing the rest.</p></div></div>
+          <div id="activityList" class="activity-list"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "repurpose-program",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Visual content repurposing workflows. Post once. Repurpose everywhere.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node --check src/server.js && node --check src/store.js && node --check src/services/workflow-engine.js && node --check src/services/tiktok.js && node --check src/services/downloader.js && node --check src/services/youtube.js && node --check src/services/facebook.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "googleapis": "^144.0.0"
+  }
+}
